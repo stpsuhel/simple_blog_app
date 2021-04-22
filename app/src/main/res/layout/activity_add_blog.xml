@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable name="blog" type="tk.suhel.myblog.model.Blog" />
+        <variable name="categories" type="tk.suhel.myblog.model.CategoryListForSpinner" />
+        <variable name="handler" type="tk.suhel.myblog.activity.AddBlogActivity" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activity.AddBlogActivity">
+
+        <TextView
+            android:id="@+id/tvAddNewBlog"
+            android:layout_width="371dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="150dp"
+            android:layout_marginEnd="20dp"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Add New Blog"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <EditText
+            android:id="@+id/etTitle"
+            android:layout_width="371dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/input_custom"
+            android:ems="10"
+            android:hint="Title"
+            android:text="@={blog.title}"
+            android:inputType="textPersonName"
+            android:paddingStart="5dp"
+            android:textAlignment="textStart"
+            app:layout_constraintEnd_toEndOf="@+id/tvAddNewBlog"
+            app:layout_constraintStart_toStartOf="@+id/tvAddNewBlog"
+            app:layout_constraintTop_toBottomOf="@+id/tvAddNewBlog"
+            android:autofillHints="" />
+
+        <EditText
+            android:id="@+id/etDescription"
+            android:layout_width="371dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/input_custom"
+            android:ems="10"
+            android:hint="Description"
+            android:text="@={blog.description}"
+            android:inputType="textMultiLine"
+            android:paddingStart="5dp"
+            android:textAlignment="textStart"
+            app:layout_constraintEnd_toEndOf="@+id/etTitle"
+            app:layout_constraintStart_toStartOf="@+id/etTitle"
+            app:layout_constraintTop_toBottomOf="@+id/etTitle"
+            android:autofillHints="" />
+
+        <com.androidbuts.multispinnerfilter.MultiSpinnerSearch
+            android:setCategoryToSpinner="@{categories.categoryList}"
+            android:id="@+id/spnCategories"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
+            android:background="@drawable/input_custom"
+            app:hintText="Select Category"
+            app:layout_constraintEnd_toEndOf="@+id/etDescription"
+            app:layout_constraintStart_toStartOf="@+id/etDescription"
+            app:layout_constraintTop_toBottomOf="@+id/etDescription" />
+
+        <Button
+            android:id="@+id/btnSaveBlog"
+            android:onClick="@{handler::saveUpdateBlogData}"
+            android:layout_width="371dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/btn_custom"
+            android:text="Save"
+            app:layout_constraintEnd_toEndOf="@+id/spnCategories"
+            app:layout_constraintStart_toStartOf="@+id/spnCategories"
+            app:layout_constraintTop_toBottomOf="@+id/spnCategories" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

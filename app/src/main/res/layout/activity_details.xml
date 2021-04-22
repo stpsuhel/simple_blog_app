@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable name="blog" type="tk.suhel.myblog.model.Blog" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".activity.DetailsActivity">
+
+        <ImageView
+            android:loadImage="@{blog.cover_photo}"
+            android:id="@+id/ivViewCoverImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:scaleType="fitXY"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars"
+            android:contentDescription="Cover Photo" />
+
+        <TextView
+            android:id="@+id/tvViewTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="20dp"
+            android:text="@{blog.title}"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ivViewCoverImage"
+            app:layout_constraintTop_toTopOf="@+id/ivViewCoverImage" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:paddingStart="5dp"
+            android:text="Categories"
+            app:layout_constraintEnd_toEndOf="@+id/tvViewTitle"
+            app:layout_constraintStart_toEndOf="@+id/ivViewCoverImage"
+            app:layout_constraintTop_toBottomOf="@+id/tvViewTitle"
+            tools:ignore="RtlSymmetry" />
+
+        <TextView
+            android:id="@+id/tvViewCategories"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingStart="10dp"
+            android:text="@{blog.categories.toString()}"
+            app:layout_constraintEnd_toEndOf="@+id/textView3"
+            app:layout_constraintStart_toStartOf="@+id/textView3"
+            app:layout_constraintTop_toBottomOf="@+id/textView3"
+            tools:ignore="RtlSymmetry" />
+
+        <TextView
+            android:id="@+id/tvViewDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@{blog.description}"
+            app:layout_constraintEnd_toEndOf="@+id/tvViewCategories"
+            app:layout_constraintStart_toStartOf="@+id/ivViewCoverImage"
+            app:layout_constraintTop_toBottomOf="@+id/ivViewCoverImage" />
+
+        <TextView
+            android:id="@+id/TextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:paddingLeft="5dp"
+            android:text="Author Info"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/tvViewDescription"
+            app:layout_constraintStart_toStartOf="@+id/tvViewDescription"
+            app:layout_constraintTop_toBottomOf="@+id/tvViewDescription" />
+
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:loadImage="@{blog.author.avatar}"
+            android:id="@+id/civAuthorImage"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="5dp"
+            android:src="@color/design_default_color_primary_dark"
+            app:civ_border_color="#494949"
+            app:civ_border_width="2dp"
+            app:civ_shadow="true"
+            app:civ_shadow_color="#202020"
+            app:civ_shadow_radius="5dp"
+            app:layout_constraintStart_toStartOf="@+id/TextView"
+            app:layout_constraintTop_toBottomOf="@+id/TextView" />
+
+        <TextView
+            android:id="@+id/tvAuthorName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@{blog.author.name}"
+            app:layout_constraintBottom_toBottomOf="@+id/civAuthorImage"
+            app:layout_constraintEnd_toEndOf="@+id/TextView"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/civAuthorImage"
+            app:layout_constraintTop_toTopOf="@+id/civAuthorImage"
+            app:layout_constraintVertical_bias="0.345" />
+
+        <TextView
+            android:id="@+id/tvAuthorProfession"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@{blog.author.profession}"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="@+id/tvAuthorName"
+            app:layout_constraintStart_toStartOf="@+id/tvAuthorName"
+            app:layout_constraintTop_toBottomOf="@+id/tvAuthorName" />
+
+        <Button
+            android:id="@+id/btnEdit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/btn_custom"
+            android:text="Edit Blog"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/tvViewDescription"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/tvViewDescription"
+            app:layout_constraintTop_toBottomOf="@+id/civAuthorImage"
+            app:layout_constraintVertical_bias="0.982" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
