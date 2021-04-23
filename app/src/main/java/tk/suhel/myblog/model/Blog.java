@@ -7,6 +7,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.androidbuts.multispinnerfilter.KeyPairBoolData;
 import com.squareup.picasso.Picasso;
 
 import java.io.Serializable;
@@ -42,13 +43,12 @@ public class Blog implements Serializable {
         Picasso.get().load(cover_photo).into(imageView);
     }
 
-    public String getStringFromList(List<String> categories){
-        StringBuilder sb = new StringBuilder();
-        for (String s: categories) {
-            sb.append(s);
-            sb.append(",");
+    public Boolean ifExist(List<Blog> blogList, Blog blog){
+        for (Blog item : blogList) {
+            if (item.getId() == blog.getId()){
+                return true;
+            }
         }
-        sb.setLength(sb.length()-1);
-        return sb.toString();
+        return false;
     }
 }

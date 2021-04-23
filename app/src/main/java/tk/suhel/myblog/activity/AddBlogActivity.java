@@ -78,8 +78,7 @@ public class AddBlogActivity extends AppCompatActivity {
             Author author = oldBlog.getAuthor() == null?
                     new Author(1, "John Doe", "https://i.pravatar.cc/250", "Content Writer") : oldBlog.getAuthor();
 
-            Blog blog = new Blog(title, des, imageUrl, categoryListObject.getSelectedCategoryList(), author);
-            blog.setId(oldBlog.getId());
+            Blog blog = new Blog(oldBlog.getId(), title, des, imageUrl, categoryListObject.getSelectedCategoryList(), author);
             if (isUpdate){
                 blogViewModel.updateBlog(blog);
             }else {

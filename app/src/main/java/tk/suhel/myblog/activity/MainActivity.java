@@ -1,6 +1,7 @@
 package tk.suhel.myblog.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -33,9 +34,10 @@ import tk.suhel.myblog.viewModel.BlogViewModel;
 import static tk.suhel.myblog.utils.Constant.CURRENT_BLOG_ID;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "MainActivity.TAG";
     private BlogAdapter adapter;
     private BlogViewModel blogViewModel;
+    private List<Blog> blogList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,28 +48,28 @@ public class MainActivity extends AppCompatActivity {
         adapter = new BlogAdapter(this);
         binding.blogListRecyclerView.setAdapter(adapter);
         binding.blogListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        binding.blogListRecyclerView
-                .addItemDecoration(new DividerItemDecoration(binding.blogListRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
+//        binding.blogListRecyclerView
+//                .addItemDecoration(new DividerItemDecoration(binding.blogListRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
         blogViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(BlogViewModel.class);
         blogViewModel.getBlogs().observe(this, new Observer<List<Blog>>() {
             @Override
             public void onChanged(List<Blog> blogs) {
+                blogList = blogs;
                 adapter.setBlogs(blogs);
             }
         });
 
         blogViewModel.getAllBlogFromApi().enqueue(new Callback<Root>() {
             @Override
-            public void onResponse(@NotNull Call<Root> call, @NotNull Response<Root> response) {
+            public void onResponse(Call<Root> call, Response<Root> response) {
                 assert response.body() != null;
                 List<Blog> blogs = response.body().getBlogs();
                 setDataToRoom(blogs);
-                Toast.makeText(MainActivity.this, "Success! " + response.message(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onFailure(@NotNull Call<Root> call, @NotNull Throwable t) {
+            public void onFailure(Call<Root> call, Throwable t) {
                 Toast.makeText(MainActivity.this, "Error! " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -81,7 +83,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void setDataToRoom(List<Blog> blogs) {
         for (Blog blog: blogs) {
-            blogViewModel.saveBlog(blog);
+            if (blogList != null && blogList.size() > 0){
+                if (blog.ifExist(blogList, blog)){
+                    blogViewModel.updateBlog(blog);
+                }else {
+                    blogViewModel.saveBlog(blog);
+                }
+            }else {
+                blog.setId(0);
+                blogViewModel.saveBlog(blog);
+            }
         }
     }
 }

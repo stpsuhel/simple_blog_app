@@ -3,6 +3,7 @@ package tk.suhel.myblog.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +22,12 @@ import tk.suhel.myblog.R;
 import tk.suhel.myblog.activity.DetailsActivity;
 import tk.suhel.myblog.databinding.RowForBlogViewBinding;
 import tk.suhel.myblog.model.Blog;
+import tk.suhel.myblog.model.CategoryListForSpinner;
 
 import static tk.suhel.myblog.utils.Constant.CURRENT_BLOG_ID;
 
 public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.BlogViewHolder> {
+    private static final String TAG = "BlogAdapter.TAG";
     private LayoutInflater mInflater;
     private List<Blog> blogList;
 
@@ -44,6 +47,9 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.BlogViewHolder
         Blog blog = blogList.get(position);
         holder.rowForBlogViewBinding.setBlog(blog);
 
+        CategoryListForSpinner categoryListForSpinner = new CategoryListForSpinner();
+        holder.rowForBlogViewBinding.setCategories(categoryListForSpinner.listToString(blog.getCategories()));
+
         holder.rowForBlogViewBinding.ivCoverPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,6 +61,7 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.BlogViewHolder
     }
 
     public void setBlogs(List<Blog> blogs){
+        Log.d(TAG, "setBlogs: " + blogs);
         this.blogList = blogs;
         notifyDataSetChanged();
     }

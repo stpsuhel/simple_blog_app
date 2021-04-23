@@ -1,5 +1,6 @@
 package tk.suhel.myblog.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
@@ -8,6 +9,9 @@ import androidx.lifecycle.ViewModelProvider;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -25,6 +29,7 @@ import lombok.SneakyThrows;
 import tk.suhel.myblog.R;
 import tk.suhel.myblog.databinding.ActivityDetailsBinding;
 import tk.suhel.myblog.model.Blog;
+import tk.suhel.myblog.model.CategoryListForSpinner;
 import tk.suhel.myblog.viewModel.BlogViewModel;
 
 import static tk.suhel.myblog.utils.Constant.CURRENT_BLOG_ID;
@@ -46,15 +51,6 @@ public class DetailsActivity extends AppCompatActivity {
         setTitle("Blog Details");
 
         blogId = getIntent().getIntExtra(CURRENT_BLOG_ID, 0);
-
-        binding.btnEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DetailsActivity.this, AddBlogActivity.class);
-                intent.putExtra(CURRENT_BLOG_ID, blog);
-                startActivity(intent);
-            }
-        });
     }
 
     @Override
@@ -64,9 +60,32 @@ public class DetailsActivity extends AppCompatActivity {
             if (blogId != 0){
                 blog = blogViewModel.getBlogs(blogId).get();
                 binding.setBlog(blog);
+
+                CategoryListForSpinner categoryListForSpinner = new CategoryListForSpinner();
+                binding.setCategories(categoryListForSpinner.listToString(blog.getCategories()));
             }
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
+            Toast.makeText(DetailsActivity.this, "Error! " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.details_page_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.edit_blog_activity) {
+            Intent intent = new Intent(DetailsActivity.this, AddBlogActivity.class);
+            intent.putExtra(CURRENT_BLOG_ID, blog);
+            startActivity(intent);
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
     }
 }

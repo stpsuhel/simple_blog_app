@@ -1,140 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable name="blog" type="tk.suhel.myblog.model.Blog" />
+        <variable name="categories" type="String" />
     </data>
-    <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".activity.DetailsActivity">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:loadImage="@{blog.cover_photo}"
-            android:id="@+id/ivViewCoverImage"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:scaleType="fitXY"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:srcCompat="@tools:sample/avatars"
-            android:contentDescription="Cover Photo" />
+            tools:context=".activity.DetailsActivity">
 
-        <TextView
-            android:id="@+id/tvViewTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="20dp"
-            android:text="@{blog.title}"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ivViewCoverImage"
-            app:layout_constraintTop_toTopOf="@+id/ivViewCoverImage" />
+            <include
+                android:id="@+id/includeLayout"
+                layout="@layout/row_for_blog_view"
+                app:blog="@{blog}"
+                app:categories="@{categories}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:paddingStart="5dp"
-            android:text="Categories"
-            app:layout_constraintEnd_toEndOf="@+id/tvViewTitle"
-            app:layout_constraintStart_toEndOf="@+id/ivViewCoverImage"
-            app:layout_constraintTop_toBottomOf="@+id/tvViewTitle"
-            tools:ignore="RtlSymmetry" />
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardViewDescription"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="5dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="5dp"
+                app:layout_constraintEnd_toEndOf="@+id/includeLayout"
+                app:layout_constraintStart_toStartOf="@+id/includeLayout"
+                app:layout_constraintTop_toBottomOf="@+id/includeLayout">
 
-        <TextView
-            android:id="@+id/tvViewCategories"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:paddingStart="10dp"
-            android:text="@{blog.categories.toString()}"
-            app:layout_constraintEnd_toEndOf="@+id/textView3"
-            app:layout_constraintStart_toStartOf="@+id/textView3"
-            app:layout_constraintTop_toBottomOf="@+id/textView3"
-            tools:ignore="RtlSymmetry" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="7dp">
 
-        <TextView
-            android:id="@+id/tvViewDescription"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="@{blog.description}"
-            app:layout_constraintEnd_toEndOf="@+id/tvViewCategories"
-            app:layout_constraintStart_toStartOf="@+id/ivViewCoverImage"
-            app:layout_constraintTop_toBottomOf="@+id/ivViewCoverImage" />
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:text="Description"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/TextView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:paddingLeft="5dp"
-            android:text="Author Info"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="@+id/tvViewDescription"
-            app:layout_constraintStart_toStartOf="@+id/tvViewDescription"
-            app:layout_constraintTop_toBottomOf="@+id/tvViewDescription" />
+                    <TextView
+                        android:id="@+id/tvViewDescription"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="@{blog.description}"
+                        app:layout_constraintEnd_toEndOf="@+id/textView"
+                        app:layout_constraintStart_toStartOf="@+id/textView"
+                        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-        <com.mikhaellopez.circularimageview.CircularImageView
-            android:loadImage="@{blog.author.avatar}"
-            android:id="@+id/civAuthorImage"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="5dp"
-            android:src="@color/design_default_color_primary_dark"
-            app:civ_border_color="#494949"
-            app:civ_border_width="2dp"
-            app:civ_shadow="true"
-            app:civ_shadow_color="#202020"
-            app:civ_shadow_radius="5dp"
-            app:layout_constraintStart_toStartOf="@+id/TextView"
-            app:layout_constraintTop_toBottomOf="@+id/TextView" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:id="@+id/tvAuthorName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:text="@{blog.author.name}"
-            app:layout_constraintBottom_toBottomOf="@+id/civAuthorImage"
-            app:layout_constraintEnd_toEndOf="@+id/TextView"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/civAuthorImage"
-            app:layout_constraintTop_toTopOf="@+id/civAuthorImage"
-            app:layout_constraintVertical_bias="0.345" />
+            </com.google.android.material.card.MaterialCardView>
 
-        <TextView
-            android:id="@+id/tvAuthorProfession"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@{blog.author.profession}"
-            android:textSize="12sp"
-            app:layout_constraintEnd_toEndOf="@+id/tvAuthorName"
-            app:layout_constraintStart_toStartOf="@+id/tvAuthorName"
-            app:layout_constraintTop_toBottomOf="@+id/tvAuthorName" />
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardViewAuthor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="5dp"
+                app:cardElevation="5dp"
+                app:cardCornerRadius="5dp"
+                app:layout_constraintStart_toStartOf="@+id/cardViewDescription"
+                app:layout_constraintEnd_toEndOf="@+id/cardViewDescription"
+                app:layout_constraintTop_toBottomOf="@+id/cardViewDescription">
 
-        <Button
-            android:id="@+id/btnEdit"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/btn_custom"
-            android:text="Edit Blog"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/tvViewDescription"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/tvViewDescription"
-            app:layout_constraintTop_toBottomOf="@+id/civAuthorImage"
-            app:layout_constraintVertical_bias="0.982" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="7dp">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <TextView
+                        android:id="@+id/TextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:text="Author Info"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <com.mikhaellopez.circularimageview.CircularImageView
+                        android:id="@+id/civAuthorImage"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="5dp"
+                        android:loadImage="@{blog.author.avatar}"
+                        android:src="@color/design_default_color_primary_dark"
+                        app:civ_border_color="#494949"
+                        app:civ_border_width="2dp"
+                        app:civ_shadow="true"
+                        app:civ_shadow_color="#202020"
+                        app:civ_shadow_radius="5dp"
+                        app:layout_constraintStart_toStartOf="@+id/TextView"
+                        app:layout_constraintTop_toBottomOf="@+id/TextView" />
+
+                    <TextView
+                        android:id="@+id/tvAuthorName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:text="@{blog.author.name}"
+                        app:layout_constraintBottom_toBottomOf="@+id/civAuthorImage"
+                        app:layout_constraintEnd_toEndOf="@+id/TextView"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toEndOf="@+id/civAuthorImage"
+                        app:layout_constraintTop_toTopOf="@+id/civAuthorImage"
+                        app:layout_constraintVertical_bias="0.345" />
+
+                    <TextView
+                        android:id="@+id/tvAuthorProfession"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:text="@{blog.author.profession}"
+                        android:textSize="12sp"
+                        app:layout_constraintEnd_toEndOf="@+id/tvAuthorName"
+                        app:layout_constraintStart_toStartOf="@+id/tvAuthorName"
+                        app:layout_constraintTop_toBottomOf="@+id/tvAuthorName" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
 </layout>

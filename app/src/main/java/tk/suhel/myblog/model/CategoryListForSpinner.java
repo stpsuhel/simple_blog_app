@@ -78,5 +78,21 @@ public class CategoryListForSpinner{
                 }
             }
         });
+        if (selectedCategoryList.isEmpty()){
+            for (KeyPairBoolData item : alreadySelectedList) {
+                Log.d(TAG, "setCategoryToSpinner: " + item.getName());
+                selectedCategoryList.add(item.getName());
+            }
+        }
+    }
+
+    public String listToString(List<String> list) {
+        StringBuilder sb = new StringBuilder();
+        for (String s: list) {
+            sb.append(s);
+            sb.append(", ");
+        }
+        sb.setLength(sb.length()-2);
+        return sb.toString();
     }
 }

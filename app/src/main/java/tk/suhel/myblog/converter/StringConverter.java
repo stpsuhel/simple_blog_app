@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
 public class StringConverter {
     @TypeConverter
     public static List<String> fromString(String value) {
@@ -18,9 +21,9 @@ public class StringConverter {
         StringBuilder sb = new StringBuilder();
         for (String s: list) {
             sb.append(s);
-            sb.append(",");
+            sb.append(", ");
         }
-        sb.setLength(sb.length()-1);
+        sb.setLength(sb.length()-2);
         return sb.toString();
     }
 }

@@ -16,15 +16,21 @@ public interface BlogDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void saveBlog(Blog blog);
 
+//    @Insert(onConflict = )
+//    public void saveAllBlog(List<Blog> blogs);
+
     @Update
     public void updateBlog(Blog blog);
 
-    @Query("Select * From blog")
+    @Query("select * from blog")
     public LiveData<List<Blog>> getBlogs();
 
-    @Query("Select * From blog Where id = :id")
+    @Query("select * from blog where id = :id")
     public Blog getBlogs(int id);
 
-    @Query("DELETE from blog")
+    @Query("delete from blog")
     public void deleteBlogs();
+
+    @Query("delete from blog where id = :id")
+    public void deleteBlogs(int id);
 }
