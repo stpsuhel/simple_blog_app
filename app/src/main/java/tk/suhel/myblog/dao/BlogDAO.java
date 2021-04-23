@@ -16,8 +16,8 @@ public interface BlogDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void saveBlog(Blog blog);
 
-//    @Insert(onConflict = )
-//    public void saveAllBlog(List<Blog> blogs);
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    public void saveAllBlog(List<Blog> blog);
 
     @Update
     public void updateBlog(Blog blog);
@@ -28,9 +28,6 @@ public interface BlogDAO {
     @Query("select * from blog where id = :id")
     public Blog getBlogs(int id);
 
-    @Query("delete from blog")
-    public void deleteBlogs();
-
     @Query("delete from blog where id = :id")
-    public void deleteBlogs(int id);
+    public int deleteBlogs(int id);
 }

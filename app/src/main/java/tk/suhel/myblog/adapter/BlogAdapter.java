@@ -20,6 +20,7 @@ import java.util.List;
 
 import tk.suhel.myblog.R;
 import tk.suhel.myblog.activity.DetailsActivity;
+import tk.suhel.myblog.component.DaggerCategoryListForSpinnerComponent;
 import tk.suhel.myblog.databinding.RowForBlogViewBinding;
 import tk.suhel.myblog.model.Blog;
 import tk.suhel.myblog.model.CategoryListForSpinner;
@@ -44,10 +45,13 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.BlogViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull BlogViewHolder holder, int position) {
+        if (blogList == null){
+            return;
+        }
         Blog blog = blogList.get(position);
         holder.rowForBlogViewBinding.setBlog(blog);
 
-        CategoryListForSpinner categoryListForSpinner = new CategoryListForSpinner();
+        CategoryListForSpinner categoryListForSpinner = DaggerCategoryListForSpinnerComponent.create().getCategoryListForSpinner();
         holder.rowForBlogViewBinding.setCategories(categoryListForSpinner.listToString(blog.getCategories()));
 
         holder.rowForBlogViewBinding.ivCoverPhoto.setOnClickListener(new View.OnClickListener() {
@@ -61,7 +65,6 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.BlogViewHolder
     }
 
     public void setBlogs(List<Blog> blogs){
-        Log.d(TAG, "setBlogs: " + blogs);
         this.blogList = blogs;
         notifyDataSetChanged();
     }
@@ -69,7 +72,7 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.BlogViewHolder
     @Override
     public int getItemCount() {
         if (blogList != null) return blogList.size();
-        return 0;
+        return 1;
     }
 
     public static class BlogViewHolder extends RecyclerView.ViewHolder{

@@ -21,9 +21,9 @@ public class StringConverter {
         StringBuilder sb = new StringBuilder();
         for (String s: list) {
             sb.append(s);
-            sb.append(", ");
+            sb.append(",");
         }
-        sb.setLength(sb.length()-2);
+        sb.setLength(sb.length()-1);
         return sb.toString();
     }
 }

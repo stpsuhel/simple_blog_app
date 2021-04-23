@@ -10,6 +10,8 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import javax.inject.Inject;
+
 import tk.suhel.myblog.converter.AuthorConverter;
 import tk.suhel.myblog.converter.StringConverter;
 import tk.suhel.myblog.dao.BlogDAO;
@@ -28,33 +30,10 @@ public abstract class BlogDatabase extends RoomDatabase {
                 if (INSTANCE == null){
                     INSTANCE = Room
                             .databaseBuilder(context.getApplicationContext(), BlogDatabase.class, "simple_blog_db")
-//                            .addCallback(getCallBack)
                             .build();
                 }
             }
         }
         return INSTANCE;
     }
-
-//    private static RoomDatabase.Callback getCallBack = new RoomDatabase.Callback(){
-//        @Override
-//        public void onOpen(@NonNull SupportSQLiteDatabase db) {
-//            super.onOpen(db);
-//            new GeneratesDbData(INSTANCE).execute();
-//        }
-//    };
-
-//    private static class GeneratesDbData extends AsyncTask<Void, Void, Void> {
-//        private final BlogDAO dao;
-//        public GeneratesDbData(BlogDatabase instance) {
-//            dao = instance.getBlogDAO();
-//        }
-//
-//        @Override
-//        protected Void doInBackground(Void... voids) {
-////            Blog blog = new Blog(0, "Blog 1", "Description 1", "https://i.picsum.photos/id/579/200/300.jpg?hmac=9MD8EV4Jl9EqKLkTj5kyNdBUKQWyHk2m4pE4UCBGc8Q");
-////            dao.deleteBlogs();
-//            return null;
-//        }
-//    }
 }

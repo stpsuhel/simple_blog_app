@@ -6,18 +6,10 @@ import androidx.lifecycle.ViewModelProvider;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.androidbuts.multispinnerfilter.KeyPairBoolData;
-import com.androidbuts.multispinnerfilter.MultiSpinnerSearch;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import tk.suhel.myblog.R;
+import tk.suhel.myblog.component.CategoryListForSpinnerComponent;
+import tk.suhel.myblog.component.DaggerCategoryListForSpinnerComponent;
 import tk.suhel.myblog.databinding.ActivityAddBlogBinding;
 import tk.suhel.myblog.model.Author;
 import tk.suhel.myblog.model.Blog;
@@ -46,7 +38,8 @@ public class AddBlogActivity extends AppCompatActivity {
 
         oldBlog = (Blog) getIntent().getSerializableExtra(CURRENT_BLOG_ID);
         assert oldBlog != null;
-        categoryListObject = new CategoryListForSpinner();
+
+        categoryListObject = DaggerCategoryListForSpinnerComponent.create().getCategoryListForSpinner();
         categoryListObject.setAlreadySelectedList(oldBlog.getCategories());
 
         binding.setBlog(oldBlog);
@@ -78,6 +71,7 @@ public class AddBlogActivity extends AppCompatActivity {
             Author author = oldBlog.getAuthor() == null?
                     new Author(1, "John Doe", "https://i.pravatar.cc/250", "Content Writer") : oldBlog.getAuthor();
 
+            Log.d(TAG, "saveUpdateBlogData: " + categoryListObject.getSelectedCategoryList());
             Blog blog = new Blog(oldBlog.getId(), title, des, imageUrl, categoryListObject.getSelectedCategoryList(), author);
             if (isUpdate){
                 blogViewModel.updateBlog(blog);

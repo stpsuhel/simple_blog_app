@@ -10,6 +10,8 @@ import com.androidbuts.multispinnerfilter.MultiSpinnerSearch;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import lombok.Data;
 
 public class CategoryListForSpinner{
@@ -18,6 +20,7 @@ public class CategoryListForSpinner{
     private static List<KeyPairBoolData> alreadySelectedList;
     private static List<String> selectedCategoryList;
 
+    @Inject
     public CategoryListForSpinner() {
         this.categoryList = new ArrayList<>();
         alreadySelectedList = new ArrayList<>();
@@ -25,9 +28,9 @@ public class CategoryListForSpinner{
         setCategoryList();
     }
 
-    public CategoryListForSpinner(List<KeyPairBoolData> categoryList) {
-        this.categoryList = categoryList;
-    }
+//    public CategoryListForSpinner(List<KeyPairBoolData> categoryList) {
+//        this.categoryList = categoryList;
+//    }
 
     public void setCategoryList(){
         categoryList.add(new KeyPairBoolData("Business", false));
@@ -43,6 +46,7 @@ public class CategoryListForSpinner{
     public void setAlreadySelectedList(List<String> list){
         if (list != null && list.size() > 0) {
             for (String s : list) {
+                Log.d(TAG, "setAlreadySelectedList: " + s);
                 alreadySelectedList.add(new KeyPairBoolData(s, true));
             }
         }
@@ -66,11 +70,13 @@ public class CategoryListForSpinner{
         if(alreadySelectedList.size() > 0){
             for (KeyPairBoolData item: list) {
                 if (ifExist(alreadySelectedList, item.getName())){
+                    Log.d(TAG, "setCategoryToSpinner: " + item.getName());
                     item.setSelected(true);
                 }
             }
         }
         spinner.setItems(list, items -> {
+            selectedCategoryList.clear();
             for (int i = 0; i < items.size(); i++) {
                 if (items.get(i).isSelected()) {
                     Log.i(TAG, i + " : " + items.get(i).getName() + " : " + items.get(i).isSelected());

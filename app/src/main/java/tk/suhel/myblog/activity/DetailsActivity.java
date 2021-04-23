@@ -1,32 +1,23 @@
 package tk.suhel.myblog.activity;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
-
-import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
-import lombok.SneakyThrows;
 import tk.suhel.myblog.R;
+import tk.suhel.myblog.component.DaggerCategoryListForSpinnerComponent;
 import tk.suhel.myblog.databinding.ActivityDetailsBinding;
 import tk.suhel.myblog.model.Blog;
 import tk.suhel.myblog.model.CategoryListForSpinner;
@@ -61,7 +52,7 @@ public class DetailsActivity extends AppCompatActivity {
                 blog = blogViewModel.getBlogs(blogId).get();
                 binding.setBlog(blog);
 
-                CategoryListForSpinner categoryListForSpinner = new CategoryListForSpinner();
+                CategoryListForSpinner categoryListForSpinner = DaggerCategoryListForSpinnerComponent.create().getCategoryListForSpinner();
                 binding.setCategories(categoryListForSpinner.listToString(blog.getCategories()));
             }
         } catch (InterruptedException | ExecutionException e) {
@@ -84,8 +75,34 @@ public class DetailsActivity extends AppCompatActivity {
             intent.putExtra(CURRENT_BLOG_ID, blog);
             startActivity(intent);
             return true;
+        }else if (item.getItemId() == R.id.delete_blog) {
+            deleteBlogItem();
+            return true;
         } else {
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void deleteBlogItem(){
+        new AlertDialog.Builder(DetailsActivity.this)
+                .setTitle("Delete Blog")
+                .setMessage("Are you sure you want to delete this Blog?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            if (blogViewModel.deleteBlogs(blogId).get() != 0){
+                                Toast.makeText(DetailsActivity.this, "Blog Successfully Deleted!", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }else {
+                                Toast.makeText(DetailsActivity.this, "Blog Not Deleted. Something Wrong...!", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (ExecutionException | InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 }

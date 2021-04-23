@@ -61,10 +61,14 @@ dependencies {
     //Circle Image Dependency
     implementation 'com.mikhaellopez:circularimageview:4.2.0'
 
-    //See Data of Room Database Dependency
+    //See Table of Room Database Dependency
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
     debugImplementation 'com.amitshekhar.android:debug-db-encrypt:1.0.6'
 
     //Multi Select Spinner Dependency
     implementation 'com.github.pratikbutani:MultiSelectSpinner:1.0.1'
+
+    //Dagger 2 Dependency
+    implementation 'com.google.dagger:dagger:2.35'
+    annotationProcessor 'com.google.dagger:dagger-compiler:2.35'
 }
