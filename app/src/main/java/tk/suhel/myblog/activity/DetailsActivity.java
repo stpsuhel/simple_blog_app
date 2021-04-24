@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.DialogInterface;
@@ -29,7 +30,7 @@ public class DetailsActivity extends AppCompatActivity {
     private static final String TAG = "DetailsActivity.TAG";
     private BlogViewModel blogViewModel;
     private int blogId;
-    private Blog blog;
+    private Blog oldBlog;
 
     private ActivityDetailsBinding binding;
 
@@ -42,22 +43,19 @@ public class DetailsActivity extends AppCompatActivity {
         setTitle("Blog Details");
 
         blogId = getIntent().getIntExtra(CURRENT_BLOG_ID, 0);
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        try {
-            if (blogId != 0){
-                blog = blogViewModel.getBlogs(blogId).get();
-                binding.setBlog(blog);
-
-                CategoryListForSpinner categoryListForSpinner = DaggerCategoryListForSpinnerComponent.create().getCategoryListForSpinner();
-                binding.setCategories(categoryListForSpinner.listToString(blog.getCategories()));
-            }
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-            Toast.makeText(DetailsActivity.this, "Error! " + e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+        if (blogId != 0){
+            blogViewModel.getBlogs(blogId).observe(this, new Observer<Blog>() {
+                @Override
+                public void onChanged(Blog blog) {
+                    oldBlog = blog;
+                    if (blog != null){
+                        binding.setBlog(blog);
+                        CategoryListForSpinner categoryListForSpinner = DaggerCategoryListForSpinnerComponent.create().getCategoryListForSpinner();
+                        binding.setCategories(categoryListForSpinner.listToString(blog.getCategories()));
+                    }
+                }
+            });
         }
     }
 
@@ -72,18 +70,18 @@ public class DetailsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.edit_blog_activity) {
             Intent intent = new Intent(DetailsActivity.this, AddBlogActivity.class);
-            intent.putExtra(CURRENT_BLOG_ID, blog);
+            intent.putExtra(CURRENT_BLOG_ID, oldBlog);
             startActivity(intent);
             return true;
         }else if (item.getItemId() == R.id.delete_blog) {
-            deleteBlogItem();
+            deleteBlogItemAlert();
             return true;
         } else {
             return super.onOptionsItemSelected(item);
         }
     }
 
-    public void deleteBlogItem(){
+    public void deleteBlogItemAlert(){
         new AlertDialog.Builder(DetailsActivity.this)
                 .setTitle("Delete Blog")
                 .setMessage("Are you sure you want to delete this Blog?")

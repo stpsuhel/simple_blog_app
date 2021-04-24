@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import tk.suhel.myblog.component.CategoryListForSpinnerComponent;
 import tk.suhel.myblog.component.DaggerCategoryListForSpinnerComponent;
 import tk.suhel.myblog.databinding.ActivityAddBlogBinding;
 import tk.suhel.myblog.model.Author;

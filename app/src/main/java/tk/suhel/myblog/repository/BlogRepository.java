@@ -37,20 +37,8 @@ public class BlogRepository {
         return blogList;
     }
 
-    public AsyncTask<Integer, Void, Blog> getBlogs(int id){
-        return new findByIdAsync(dao).execute(id);
-    }
-
-    private static class findByIdAsync extends AsyncTask<Integer, Void, Blog> {
-        private final BlogDAO blogDAO;
-        public findByIdAsync(BlogDAO dao) {
-            this.blogDAO = dao;
-        }
-
-        @Override
-        protected Blog doInBackground(Integer... ids) {
-            return blogDAO.getBlogs(ids[0]);
-        }
+    public LiveData<Blog> getBlogs(int id){
+        return dao.getBlogs(id);
     }
 
     public void saveBlog(Blog blog){
@@ -92,6 +80,22 @@ public class BlogRepository {
         @Override
         protected Integer doInBackground(Integer... ids) {
             return blogDAO.deleteBlogs(ids[0]);
+        }
+    }
+
+    public AsyncTask<Void, Void, Integer> deleteAllBlogs(){
+        return new deleteAllBlogsAsyncTask(dao).execute();
+    }
+
+    private static class deleteAllBlogsAsyncTask extends AsyncTask<Void, Void, Integer> {
+        private BlogDAO blogDAO;
+        public deleteAllBlogsAsyncTask(BlogDAO dao) {
+            this.blogDAO = dao;
+        }
+
+        @Override
+        protected Integer doInBackground(Void... voids) {
+            return blogDAO.deleteAllBlogs();
         }
     }
 

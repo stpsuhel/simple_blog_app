@@ -31,7 +31,7 @@ public class BlogViewModel extends AndroidViewModel {
         return blogList;
     }
 
-    public AsyncTask<Integer, Void, Blog> getBlogs(int id){
+    public LiveData<Blog> getBlogs(int id){
         return repository.getBlogs(id);
     }
 
@@ -46,6 +46,10 @@ public class BlogViewModel extends AndroidViewModel {
 
     public AsyncTask<Integer, Void, Integer> deleteBlogs(int id){
         return repository.deleteBlogs(id);
+    }
+
+    public AsyncTask<Void, Void, Integer> deleteAllBlogs(){
+        return repository.deleteAllBlogs();
     }
 
     public Call<Root> getAllBlogFromApi(){

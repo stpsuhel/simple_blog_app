@@ -1,23 +1,31 @@
 package tk.suhel.myblog.activity;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import tk.suhel.myblog.R;
 import tk.suhel.myblog.adapter.BlogAdapter;
 import tk.suhel.myblog.component.DaggerBlogComponent;
 import tk.suhel.myblog.databinding.ActivityMainBinding;
@@ -53,23 +61,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         if (blogList == null){
-            showProgressDialog().show();
+            getDataFromApi();
         }
-
-        blogViewModel.getAllBlogFromApi().enqueue(new Callback<Root>() {
-            @Override
-            public void onResponse(Call<Root> call, Response<Root> response) {
-                assert response.body() != null;
-                blogViewModel.saveAllBlogs(response.body().getBlogs());
-                showProgressDialog().dismiss();
-            }
-
-            @Override
-            public void onFailure(Call<Root> call, Throwable t) {
-                showProgressDialog().dismiss();
-                Toast.makeText(MainActivity.this, "Error! " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     public void goToAddBlogActivity(View v) {
@@ -80,22 +73,74 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public AlertDialog showProgressDialog(){
-        final ProgressBar progressBar = new ProgressBar(this);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        progressBar.setPadding(5, 5, 5, 50);
-        progressBar.setLayoutParams(lp);
+    public void getDataFromApi(){
+        blogViewModel.getAllBlogFromApi().enqueue(new Callback<Root>() {
+            @Override
+            public void onResponse(Call<Root> call, Response<Root> response) {
+                assert response.body() != null;
+                blogViewModel.saveAllBlogs(response.body().getBlogs());
+            }
 
-        AlertDialog dialog = new AlertDialog.Builder(MainActivity.this)
-                .setTitle("Loading...Blog...")
-                .setMessage("Please wait for a moment...")
-                .create();
+            @Override
+            public void onFailure(Call<Root> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Error! " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
-//        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#7dffffff")));
-        dialog.setView(progressBar);
-        return dialog;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.api_call_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.refresh_api_call) {
+            getAlartDialogForDataFromApi();
+            return true;
+        }else if (item.getItemId() == R.id.delete_all_blog) {
+            deleteBlogItemAlert();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void deleteBlogItemAlert(){
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle("Delete All Blog!!")
+                .setMessage("Are you sure you want to delete All Blog?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            if (blogViewModel.deleteAllBlogs().get() > 0){
+                                Toast.makeText(MainActivity.this, "All Blog Successfully Deleted!", Toast.LENGTH_SHORT).show();
+                            }else {
+                                Toast.makeText(MainActivity.this, "All Blog Not Deleted. Something Wrong...!", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (ExecutionException | InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
+    public void getAlartDialogForDataFromApi(){
+        new AlertDialog.Builder(MainActivity.this)
+                .setTitle("Refresh Blog!!")
+                .setMessage("Are you sure you want to Reload All Blog?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        getDataFromApi();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .show();
     }
 }

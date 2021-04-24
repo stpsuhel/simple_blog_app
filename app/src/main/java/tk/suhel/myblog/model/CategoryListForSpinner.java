@@ -21,16 +21,12 @@ public class CategoryListForSpinner{
     private static List<String> selectedCategoryList;
 
     @Inject
-    public CategoryListForSpinner() {
-        this.categoryList = new ArrayList<>();
-        alreadySelectedList = new ArrayList<>();
-        selectedCategoryList = new ArrayList<>();
+    public CategoryListForSpinner(List<KeyPairBoolData> categoryList, List<KeyPairBoolData> alreadySelectedList, List<String> selectedCategoryList) {
+        this.categoryList = categoryList;
+        CategoryListForSpinner.alreadySelectedList = alreadySelectedList;
+        CategoryListForSpinner.selectedCategoryList = selectedCategoryList;
         setCategoryList();
     }
-
-//    public CategoryListForSpinner(List<KeyPairBoolData> categoryList) {
-//        this.categoryList = categoryList;
-//    }
 
     public void setCategoryList(){
         categoryList.add(new KeyPairBoolData("Business", false));

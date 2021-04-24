@@ -13,7 +13,7 @@ import tk.suhel.myblog.model.Blog;
 
 @Dao
 public interface BlogDAO {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     public void saveBlog(Blog blog);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -26,7 +26,10 @@ public interface BlogDAO {
     public LiveData<List<Blog>> getBlogs();
 
     @Query("select * from blog where id = :id")
-    public Blog getBlogs(int id);
+    public LiveData<Blog> getBlogs(int id);
+
+    @Query("delete from blog")
+    public int deleteAllBlogs();
 
     @Query("delete from blog where id = :id")
     public int deleteBlogs(int id);
