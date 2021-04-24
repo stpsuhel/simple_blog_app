@@ -10,6 +10,8 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import retrofit2.Call;
 import tk.suhel.myblog.activity.MainActivity;
 import tk.suhel.myblog.model.Root;
@@ -17,13 +19,12 @@ import tk.suhel.myblog.repository.BlogRepository;
 import tk.suhel.myblog.model.Blog;
 
 public class BlogViewModel extends AndroidViewModel {
-    private static final String TAG = "BlogViewModel.TAG";
     private BlogRepository repository;
     private LiveData<List<Blog>> blogList;
 
     public BlogViewModel(@NonNull Application application) {
         super(application);
-        repository = new BlogRepository(application);
+        this.repository = new BlogRepository(application);
         blogList = repository.getBlogs();
     }
 
@@ -36,7 +37,6 @@ public class BlogViewModel extends AndroidViewModel {
     }
 
     public void saveBlog(Blog blog){
-        Log.d(TAG, "saveBlog: " + blog);
         repository.saveBlog(blog);
     }
 

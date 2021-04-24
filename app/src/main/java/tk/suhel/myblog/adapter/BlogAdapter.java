@@ -72,7 +72,7 @@ public class BlogAdapter extends RecyclerView.Adapter<BlogAdapter.BlogViewHolder
     @Override
     public int getItemCount() {
         if (blogList != null) return blogList.size();
-        return 1;
+        return 0;
     }
 
     public static class BlogViewHolder extends RecyclerView.ViewHolder{
